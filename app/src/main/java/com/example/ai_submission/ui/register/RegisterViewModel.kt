@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.ai_submission.retrofit.ApiConfig
-import com.example.ai_submission.retrofit.GeneralResponse
+import com.example.ai_submission.data.retrofit.ApiConfig
+import com.example.ai_submission.data.retrofit.GeneralResponse
 import com.example.ai_submission.utils.Event
 import org.json.JSONObject
 import retrofit2.Call

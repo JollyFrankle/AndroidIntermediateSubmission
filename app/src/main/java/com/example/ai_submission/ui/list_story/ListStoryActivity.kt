@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ai_submission.R
+import com.example.ai_submission.data.LoadingStateAdapter
 import com.example.ai_submission.databinding.ActivityListStoryBinding
 import com.example.ai_submission.ui.add_story.AddStoryActivity
 import com.example.ai_submission.ui.login.MainActivity
@@ -33,7 +34,7 @@ class ListStoryActivity : AppCompatActivity() {
         binding = ActivityListStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(application))[ListStoryViewModel::class.java]
+        viewModel = ViewModelProvider(this, ListStoryVMSpecialFactory(application))[ListStoryViewModel::class.java]
 
         loader = Utils.generateLoader(this)
 
@@ -41,12 +42,12 @@ class ListStoryActivity : AppCompatActivity() {
         setupRecyclerView()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Refresh data
-        viewModel.getStories()
-    }
+//    override fun onStart() {
+//        super.onStart()
+//
+//        // Refresh data
+//        viewModel.getStories()
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -89,9 +90,16 @@ class ListStoryActivity : AppCompatActivity() {
             }
         }
 
+        val adapter = ListStoryAdapter()
+        binding.rvListStory.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+
         viewModel.results.observe(this) {
-            val adapter = ListStoryAdapter(it)
-            binding.rvListStory.adapter = adapter
+            adapter.submitData(lifecycle, it)
+            Toast.makeText(this, "Data updated", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.isLoading.observe(this) {

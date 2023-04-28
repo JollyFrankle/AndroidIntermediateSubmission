@@ -11,7 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.example.ai_submission.databinding.ActivityMapsBinding
-import com.example.ai_submission.retrofit.Story
+import com.example.ai_submission.data.retrofit.Story
 import com.example.ai_submission.ui.list_story.ListStoryViewModel
 import com.example.ai_submission.utils.ListStoryAdapter
 import com.example.ai_submission.utils.Utils

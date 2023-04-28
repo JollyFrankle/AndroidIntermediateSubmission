@@ -14,7 +14,7 @@ class ViewModelFactory(private val application: Application): ViewModelProvider.
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> ListStoryViewModel(application) as T
+//            modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> ListStoryViewModel(application) as T
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(application) as T
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> RegisterViewModel(application) as T
             modelClass.isAssignableFrom(DetailStoryViewModel::class.java) -> DetailStoryViewModel(application) as T

@@ -1,5 +1,8 @@
-package com.example.ai_submission.retrofit
+package com.example.ai_submission.data.retrofit
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class GeneralResponse (
@@ -46,19 +49,36 @@ data class LoginResult(
     val token: String
 )
 
+@Entity(tableName = "story")
 data class Story(
-    @SerializedName("id")
+    @PrimaryKey
+    @field:SerializedName("id")
     val id: String,
-    @SerializedName("name")
+
+    @field:SerializedName("name")
     val name: String,
-    @SerializedName("description")
+
+    @field:SerializedName("description")
     val description: String,
-    @SerializedName("photoUrl")
+
+    @field:SerializedName("photoUrl")
     val photoUrl: String,
-    @SerializedName("createdAt")
-    val createdAt: String,
-    @SerializedName("lat")
-    val lat: Double? = null,
-    @SerializedName("lon")
-    val lng: Double? = null,
+
+    @field:SerializedName("createdAt")
+    val createdAt: String
+) {
+    @Ignore // Maps tidak akan dibuat bisa offline, jadi tidak perlu disimpan di database
+    @field:SerializedName("lat")
+    val lat: Double? = null
+
+    @Ignore // sama juga dengan yg ini
+    @field:SerializedName("lon")
+    val lng: Double? = null
+}
+
+@Entity(tableName = "remote_keys")
+data class RemoteKeys(
+    @PrimaryKey val id: String,
+    val prevKey: Int?,
+    val nextKey: Int?
 )

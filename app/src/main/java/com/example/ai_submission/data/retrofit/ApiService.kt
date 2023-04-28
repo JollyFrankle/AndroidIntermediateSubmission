@@ -1,4 +1,4 @@
-package com.example.ai_submission.retrofit
+package com.example.ai_submission.data.retrofit
 
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -51,10 +51,15 @@ interface ApiService {
 
     @GET("/v1/stories")
     fun getStories(
-        @Header("Authorization") token: String,
-//        @Query("page") page: Int,
-//        @Query("size") size: Int
+        @Header("Authorization") token: String
     ): Call<AllStoriesResponse>
+
+    @GET("/v1/stories")
+    suspend fun getStoriesWithPagination( // YOU FUCKING SUSPEND WHAT THE HELL!!!!!!!!!!!
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): AllStoriesResponse
 
     @GET("/v1/stories/{id}")
     fun getStory(
