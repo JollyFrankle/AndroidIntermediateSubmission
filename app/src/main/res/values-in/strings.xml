@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App JF</string>
+    <string name="placeholder">Teks placeholder…</string>
+    <string name="loading">Memuat…</string>
+    <string name="login_desc">Selamat datang. Silakan login untuk melanjutkan.</string>
+    <string name="register_desc">Terima kasih sudah ingin mendaftar!</string>
+    <string name="lbl_name">Nama</string>
+    <string name="lbl_email">Alamat email</string>
+    <string name="lbl_password">Kata sandi</string>
+    <string name="log_in">Masuk</string>
+    <string name="register">Mendaftar</string>
+    <string name="img_illustration">Gambar ilustrasi untuk halaman ini.</string>
+    <string name="created_at">Dibuat pada %1$s</string>
+    <string name="om_add_new_btn_txt">Upload ceritamu</string>
+    <string name="om_logout_txt">Keluar akun</string>
+    <string name="btn_rotate">Putar gamabr 90 derajat searah jarum jam</string>
+    <string name="cd_captured_image">Gambar yang akan diunggah</string>
+    <string name="take_photo">Ambil Gambar</string>
+    <string name="select_from_gallery">Pilih dari Galeri</string>
+    <string name="story_description">Deskripsi cerita</string>
+    <string name="btn_upload">Unggah Ceritamu</string>
+    <string name="tmp_invalid_empty">Mohon mengisi input berikut: %1$s</string>
+    <string name="tmp_success">Berhasil %1$s</string>
+    <string name="tmp_failed">Gagal %1$s</string>
+    <string name="tmps_add_story">menambah story baru.</string>
+    <string name="tmps_register">mendaftar akun Anda.</string>
+    <string name="tmps_login">masuk akun.</string>
+    <string name="tmps_load_story">memuat data story.</string>
+    <string name="no_perms">Permission tidak diberikan.</string>
+    <string name="general_error">Kesalahan umum: %1$s</string>
+    <string name="inv_email">Alamat email invalid.</string>
+    <string name="inv_password">Password invalid: harus berisikan minimal 8 karakter.</string>
+    <string name="change_language">Ganti bahasa</string>
+    <string name="title_activity_maps">Peta Story</string>
+    <string name="om_goto_maps">Buka Peta Story</string>
+</resources>

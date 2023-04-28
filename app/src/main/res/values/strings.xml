@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">JF Story App</string>
+
+    <string name="placeholder">Placeholder text…</string>
+    <string name="loading">Loading…</string>
+    <string name="login_desc">Welcome. Please log in to continue.</string>
+    <string name="register_desc">We\'re glad to see you. Please register to continue.</string>
+    <string name="lbl_name">Name</string>
+    <string name="lbl_email">Email</string>
+    <string name="lbl_password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+    <string name="img_illustration">Illustration image for this page.</string>
+    <string name="created_at">Created at %1$s</string>
+    <string name="om_add_new_btn_txt">Upload a new story</string>
+    <string name="om_logout_txt">Log out</string>
+    <string name="btn_rotate">Rotate image 90 degrees clockwise</string>
+    <string name="cd_captured_image">Image to be uploaded</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="select_from_gallery">Select from Gallery</string>
+    <string name="story_description">Story description</string>
+    <string name="btn_upload">Upload your Story</string>
+    <string name="tmp_invalid_empty">Please fill the following input: %1$s</string>
+    <string name="tmp_success">Successfully %1$s</string>
+    <string name="tmp_failed">Failed to %1$s</string>
+    <string name="tmps_add_story">add a new story.</string>
+    <string name="tmps_register">register your account.</string>
+    <string name="tmps_login">log in.</string>
+    <string name="tmps_load_story">load the story.</string>
+    <string name="no_perms">No permission granted.</string>
+    <string name="general_error">General error: %1$s</string>
+    <string name="inv_email">Invalid email address.</string>
+    <string name="inv_password">Invalid password: make sure your password has a minimum of 8 characters.</string>
+    <string name="change_language">Change language</string>
+    <string name="title_activity_maps">Story Maps</string>
+    <string name="om_goto_maps">Open Story Maps</string>
+</resources>

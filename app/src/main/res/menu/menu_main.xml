@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/om_add_new_btn"
+        android:icon="@drawable/ic_baseline_upload_file_24"
+        android:title="@string/om_add_new_btn_txt"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_baseline_logout_24"
+        android:title="@string/om_logout_txt"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/om_goto_maps_btn"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:title="@string/om_goto_maps"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/om_change_language_btn"
+        android:icon="@drawable/ic_baseline_language_24"
+        android:title="@string/change_language"
+        app:showAsAction="ifRoom" />
+
+</menu>
