@@ -33,7 +33,7 @@ class MapsViewModel(private val application: Application): ViewModel() {
         getStories()
     }
 
-    fun getStories() {
+    private fun getStories() {
         _isLoading.value = true
 
         viewModelScope.launch {

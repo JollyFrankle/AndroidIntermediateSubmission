@@ -1,15 +1,19 @@
 package com.example.ai_submission.ui.add_story
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +22,14 @@ import com.example.ai_submission.databinding.ActivityAddStoryBinding
 import com.example.ai_submission.ui.camera.CameraActivity
 import com.example.ai_submission.utils.Utils
 import com.example.ai_submission.utils.ViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Granularity
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
 import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
@@ -26,9 +38,19 @@ class AddStoryActivity : AppCompatActivity() {
 
     private lateinit var loader: AlertDialog
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+
+    private var isTracking = false
+
     companion object {
         const val REQUEST_CODE_PERMISSIONS = 10
-        val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+        val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -100,6 +122,7 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         setupVMBinding()
+        setupGPS()
 
         binding.btnCamera.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
@@ -137,6 +160,50 @@ class AddStoryActivity : AppCompatActivity() {
             }
 
             viewModel.uploadStory(description)
+        }
+
+        binding.swUseCurrentPosition.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                isTracking = true
+                startLocationUpdates()
+            } else {
+                isTracking = false
+                stopLocationUpdates()
+                viewModel.latLngCoord.value = null
+            }
+        }
+    }
+
+    private fun setupGPS() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // https://tomas-repcik.medium.com/locationrequest-create-got-deprecated-how-to-fix-it-e4f814138764
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L).apply {
+            setMinUpdateDistanceMeters(10f)
+            setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+            setWaitForAccurateLocation(true)
+        }.build()
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(this)
+        client.checkLocationSettings(builder.build())
+            .addOnSuccessListener {
+//                getLastLocation()
+                // Do nothing: kita belum mau mendapatkan lokasi user
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, getString(R.string.tmp_failed, "GPS"), Toast.LENGTH_SHORT).show()
+            }
+
+        // Location Callback
+        locationCallback = object: LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                val location = p0.lastLocation
+                if(location != null) {
+                    // Update view model
+                    viewModel.latLngCoord.value = Pair(location.latitude, location.longitude)
+                }
+            }
         }
     }
 
@@ -177,11 +244,62 @@ class AddStoryActivity : AppCompatActivity() {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.latLngCoord.observe(this) {
+            if(it != null) {
+                binding.tilLat.editText?.setText(it.first.toString())
+                binding.tilLng.editText?.setText(it.second.toString())
+            } else {
+                binding.tilLat.editText?.setText("")
+                binding.tilLng.editText?.setText("")
+            }
+        }
     }
 
     private fun allPermissionsGranted(): Boolean {
         return REQUIRED_PERMISSIONS.all {
             ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        if(allPermissionsGranted()) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    // Update view model
+                    viewModel.latLngCoord.value = Pair(location.latitude, location.longitude)
+                }
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+        getLastLocation()
+        try {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (exception: SecurityException) {
+            Log.e("Location", "Error : " + exception.message)
+        }
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isTracking) {
+            startLocationUpdates()
         }
     }
 }

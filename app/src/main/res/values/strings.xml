@@ -34,4 +34,8 @@
     <string name="change_language">Change language</string>
     <string name="title_activity_maps">Story Maps</string>
     <string name="om_goto_maps">Open Story Maps</string>
+    <string name="use_current_position">Also submit current position</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="by_who">by %1$s</string>
 </resources>

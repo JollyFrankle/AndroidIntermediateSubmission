@@ -1,16 +1,15 @@
 package com.example.ai_submission.ui.list_story
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ai_submission.R
 import com.example.ai_submission.data.LoadingStateAdapter
@@ -20,7 +19,6 @@ import com.example.ai_submission.ui.login.MainActivity
 import com.example.ai_submission.ui.maps.MapsActivity
 import com.example.ai_submission.utils.ListStoryAdapter
 import com.example.ai_submission.utils.Utils
-import com.example.ai_submission.utils.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class ListStoryActivity : AppCompatActivity() {
@@ -28,6 +26,8 @@ class ListStoryActivity : AppCompatActivity() {
     private lateinit var viewModel: ListStoryViewModel
 
     private lateinit var loader: AlertDialog
+
+    private lateinit var adapter: ListStoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +41,6 @@ class ListStoryActivity : AppCompatActivity() {
         setupVMBinding()
         setupRecyclerView()
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//
-//        // Refresh data
-//        viewModel.getStories()
-//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -90,7 +83,7 @@ class ListStoryActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = ListStoryAdapter()
+        adapter = ListStoryAdapter()
         binding.rvListStory.adapter = adapter.withLoadStateFooter(
             footer = LoadingStateAdapter {
                 adapter.retry()
@@ -99,7 +92,6 @@ class ListStoryActivity : AppCompatActivity() {
 
         viewModel.results.observe(this) {
             adapter.submitData(lifecycle, it)
-            Toast.makeText(this, "Data updated", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.isLoading.observe(this) {
@@ -115,6 +107,15 @@ class ListStoryActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvListStory.apply {
             this.layoutManager = layoutManager
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Refresh data if adapter is initialized
+        if (::adapter.isInitialized) {
+            adapter.refresh()
         }
     }
 }

@@ -34,4 +34,8 @@
     <string name="change_language">Ganti bahasa</string>
     <string name="title_activity_maps">Peta Story</string>
     <string name="om_goto_maps">Buka Peta Story</string>
+    <string name="use_current_position">Kirimkan juga posisi saat ini</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="by_who">oleh %1$s</string>
 </resources>

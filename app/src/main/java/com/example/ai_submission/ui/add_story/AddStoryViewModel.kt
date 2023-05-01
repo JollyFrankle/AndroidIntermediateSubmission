@@ -32,6 +32,8 @@ class AddStoryViewModel(private val application: Application): ViewModel() {
     private val _message = MutableLiveData<Event<String>>()
     val message: LiveData<Event<String>> = _message
 
+    val latLngCoord = MutableLiveData<Pair<Double, Double>?>()
+
     fun setFile(file: File) {
         _currentFile.value = file
     }
@@ -49,6 +51,9 @@ class AddStoryViewModel(private val application: Application): ViewModel() {
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
         val imageMultipart = MultipartBody.Part.createFormData("photo", file.name, requestImageFile)
 
+        val lat = latLngCoord.value?.first?.toString()?.toRequestBody("text/plain".toMediaType())
+        val lng = latLngCoord.value?.second?.toString()?.toRequestBody("text/plain".toMediaType())
+
         // Send request
         viewModelScope.launch {
             val token = Utils.getToken(application).first()
@@ -57,7 +62,9 @@ class AddStoryViewModel(private val application: Application): ViewModel() {
             client.uploadStory(
                 token,
                 imageMultipart,
-                desc
+                desc,
+                lat,
+                lng
             ).enqueue(object: Callback<GeneralResponse> {
                 override fun onResponse(call: retrofit2.Call<GeneralResponse>, response: retrofit2.Response<GeneralResponse>) {
                     _isLoading.value = false
